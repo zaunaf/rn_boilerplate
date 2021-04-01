@@ -1,9 +1,20 @@
 ## RN-All
 
+## What is this?
+
 React Native Working Boilerplate for Android, IOS and Web as explained in:
 https://medium.com/@aureliomerenda/create-a-native-web-app-with-react-native-web-419acac86b82
 
+## How to use this
+Clone the repo, then remove the origin. Change folder name if you need to.
+```
+git clone git@github.com:zaunaf/rn_boilerplate.git
+cd rn_boilerplate
+git remove rm origin
+```
 
+
+## How to make this yourself
 Init
 ```sh
 npx react-native init rnall
