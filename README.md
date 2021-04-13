@@ -12,7 +12,7 @@ Clone the repo, then remove the origin. Change folder name if you need to.
 ```
 git clone git@github.com:zaunaf/rn_boilerplate.git
 cd rn_boilerplate
-git remove rm origin
+git remote rm origin
 ```
 
 ## Set your environment
