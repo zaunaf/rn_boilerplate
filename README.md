@@ -129,7 +129,7 @@ Add task "web" on the `package.json`
 "web": "react-scripts start",
 ```
 
-Correct RCTBridge warning
+Correct RCTBridge warning `./ios/pos/AppDelegate.m`
 
 ```
 #if RCT_DEV
