@@ -1,4 +1,7 @@
 package com.pos;
+// Start RN Boilerplate
+import com.pos.generated.BasePackageList;
+// End RN Boilerplate
 
 import android.app.Application;
 import android.content.Context;
@@ -11,7 +14,18 @@ import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+// Start RN Boilerplate
+import java.util.Arrays;
+
+import org.unimodules.adapters.react.ModuleRegistryAdapter;
+import org.unimodules.adapters.react.ReactModuleRegistryProvider;
+import org.unimodules.core.interfaces.SingletonModule;
+// End RN Boilerplate
+
 public class MainApplication extends Application implements ReactApplication {
+  // Start RN Boilerplate
+  private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), null);
+  // End RN Boilerplate
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
@@ -26,6 +40,15 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+
+          // Start RN Boilerplate
+          // Add unimodules
+          List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
+            new ModuleRegistryAdapter(mModuleRegistryProvider)
+          );
+          packages.addAll(unimodules);
+          // End RN Boilerplate
+
           return packages;
         }
 

@@ -31,6 +31,8 @@ Code from \*x OS will use CR without LF, and it will become problem in windows. 
 
 ## How to make this yourself
 
+### Enable Web
+
 Init
 
 ```sh
@@ -129,6 +131,8 @@ Add task "web" on the `package.json`
 "web": "react-scripts start",
 ```
 
+### Correct Warnings
+
 Correct RCTBridge warning `./ios/pos/AppDelegate.m`
 
 ```
@@ -138,6 +142,183 @@ Correct RCTBridge warning `./ios/pos/AppDelegate.m`
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"Test"
                                             initialProperties:nil];
+```
+
+### Font Loading
+
+Support font loading by creating `react-native.config.js`
+
+```
+module.exports = {
+  project: {
+    android: {},
+  },
+  assets: ['./assets/fonts/'],
+};
+```
+
+### Packages
+
+Add libs for nav, screens, expo support, etc
+
+```sh
+yarn add \
+  react-dom \
+  react-native-web \
+  react-navigation \
+  react-navigation-tabs \
+  react-navigation-stack \
+  react-screen \
+  react-native-gesture-handler \
+  react-native-safe-area-context \
+  react-native-screens \
+  react-native-svg \
+  react-native-unimodules \
+  babel-plugin-module-resolver \
+  @react-native-community/async-storage \
+  native-base@next \
+  react-native-svg \
+  expo-font \
+  @expo/vector-icons \
+  styled-components \
+  styled-system \
+  react-native-safe-area-context \
+  @react-native-picker/picker \
+  react-redux \
+  redux \
+  redux-thunk \
+  redux-logger \
+  redux-persist \
+  axios \
+  axios-hooks \
+  formik \
+  yup \
+  @native-base/formik-ui \
+  react-native-dotenv \
+  react-number-format \
+  react-native-reanimated
+```
+
+### Expo Support
+
+Add expo support, follow instructions from here https://docs.expo.io/bare/installing-unimodules/
+
+In `android/app/build.gradle` add:
+
+- `apply from: '../../node_modules/react-native-unimodules/gradle.groovy'` below `apply plugin: "com.android.application"`,
+- `addUnimodulesDependencies()` below `implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"`
+
+In `MainApplication.java` (find it):
+
+```java
+import com.pos.generated.BasePackageList;
+```
+
+below
+
+```java
+package com.pos;
+```
+
+and
+
+```java
+import java.util.Arrays;
+
+import org.unimodules.adapters.react.ModuleRegistryAdapter;
+import org.unimodules.adapters.react.ReactModuleRegistryProvider;
+import org.unimodules.core.interfaces.SingletonModule;
+```
+
+below
+
+```java
+import java.util.List;
+```
+
+Then this
+
+```java
+    private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), null);
+
+```
+
+below
+
+```java
+public class MainApplication extends Application implements ReactApplication {
+```
+
+Then this
+
+```java
+          // Add unimodules
+          List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
+            new ModuleRegistryAdapter(mModuleRegistryProvider)
+          );
+          packages.addAll(unimodules);
+```
+
+below
+
+```java
+// packages.add(new MyReactNativePackage());
+```
+
+In `android/build.gradle` change to:
+
+```gradle
+ minSdkVersion = 21
+ compileSdkVersion = 30
+ targetSdkVersion = 30
+```
+
+And in `android/settings.gradle` add
+
+```gradle
+apply from: '../node_modules/react-native-unimodules/gradle.groovy'; includeUnimodulesProjects()
+```
+
+under
+
+```gradle
+rootProject.name = 'pos'
+```
+
+Rebuild libs
+
+```sh
+rm -rf node_modules && yarn
+```
+
+For IOS,
+
+Run `pod install` inside ios directory.
+
+Before running, do:
+Run `watchman watch-del-all`
+and `yarn start --reset-cache`
+
+## Running
+
+Check first for devices/emulators:
+
+```
+$ adb devices
+```
+
+or
+
+```
+$ emulator -list-avds
+10.1_WXGA_Tablet_API_28
+Pixel_2_API_29
+```
+
+Choose adb to run
+
+```
+$ emulator -avd Pixel_2_API_29
 ```
 
 Run it:

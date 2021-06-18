@@ -1,5 +1,9 @@
 apply plugin: "com.android.application"
 
+// Start RN Boilerplate
+apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
+// End RN Boilerplate
+
 import com.android.build.OutputFile
 
 /**
@@ -189,6 +193,9 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    // Start RN Boilerplate
+    addUnimodulesDependencies()
+    // End RN Boilerplate
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

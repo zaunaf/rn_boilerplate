@@ -8,65 +8,52 @@
 
 import React from 'react';
 import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-
-const Colors = {
-  white: 'white',
-  black: 'black',
-  lighter: '#bbb',
-  darker: '#eee',
-};
+import {extendTheme, NativeBaseProvider} from 'native-base';
+import MainNavigator from './navigation/MainNavigator';
+import NavigationService from '@navigation/NavigationService';
+import {Provider, PersistGate, store, persistor} from './';
 
 const App: () => Node = () => {
-  const isDarkMode = false;
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const theme = extendTheme({
+    components: {
+      Text: {
+        baseStyle: {
+          fontFamily: 'GoogleSans-Regular',
+        },
+      },
+      Input: {
+        baseStyle: {
+          fontFamily: 'GoogleSans-Regular',
+        },
+      },
+    },
+    // colors: {
+    //   brand: {
+    //     900: '#8287af',
+    //     800: '#7c83db',
+    //     700: '#b3bef6',
+    //   },
+    // },
+    fonts: {
+      heading: `GoogleSans-Bold`,
+      body: `GoogleSans-Regular`,
+      mono: `monospace`,
+    },
+  });
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        {/* <Header /> */}
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Text style={styles.sectionTitle}>Bismillah</Text>
-          <Text>Berhasilkah?</Text>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <NativeBaseProvider theme={theme}>
+          <MainNavigator
+            ref={navigatorRef => {
+              NavigationService.setTopLevelNavigator(navigatorRef);
+            }}
+          />
+        </NativeBaseProvider>
+      </PersistGate>
+    </Provider>
   );
 };
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;

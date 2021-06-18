@@ -1,3 +1,6 @@
 rootProject.name = 'pos'
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+// Start RN Boilerplate
+apply from: '../node_modules/react-native-unimodules/gradle.groovy'; includeUnimodulesProjects()
+// End RN Boilerplate
 include ':app'
